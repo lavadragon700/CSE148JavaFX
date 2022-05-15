@@ -1,15 +1,13 @@
 package me.joey.cse148javafx.projects.project3;
 
 import java.io.*;
-import java.util.List;
-import java.util.UUID;
 
 public class User implements Serializable {
     private static final File savePath = new File("D:\\CSE148JavaFX\\src\\main\\resources\\users.dat");
     private static User loggedInUser;
 
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
     public User(String username, String password) {
         this.username = username;
