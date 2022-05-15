@@ -9,9 +9,6 @@ public class Library implements Serializable {
 
     private static File savePath = new File("D:\\CSE148JavaFX\\src\\main\\resources\\library.dat");
     private static Map<User, Library> data = new HashMap<>();
-    //Use in final project
-    // private static File savePath = new File(System.getProperty("user.dir"));
-
 
     private File libraryFile;
     private Book[] books;

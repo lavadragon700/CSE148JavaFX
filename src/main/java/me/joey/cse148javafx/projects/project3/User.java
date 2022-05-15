@@ -8,8 +8,6 @@ public class User implements Serializable {
     private static final File savePath = new File("D:\\CSE148JavaFX\\src\\main\\resources\\users.dat");
     private static User loggedInUser;
 
-    //Use in final project
-    // private static File savePath = new File(System.getProperty("user.dir"));
     private String username;
     private String password;
 
