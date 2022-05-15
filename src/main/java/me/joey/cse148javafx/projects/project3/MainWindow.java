@@ -8,12 +8,19 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class MainWindow extends Application {
+    private static Stage mainStage;
+
     Library userLib;
     ListView<String> books = new ListView<>();
 
     @Override
     public void start(Stage stage){
+        mainStage = stage;
         userLib = Library.findLibrary(User.getLoggedInUser());
         TextField searchBar = new TextField();
         ComboBox<String> searchType = new ComboBox<>();
@@ -32,6 +39,16 @@ public class MainWindow extends Application {
         Button addBook = new Button("Add a Book");
         Button removeBook = new Button("Remove a Book");
 
+        List<String> searchTypeNames = new ArrayList<>();
+
+        searchTypeNames.add("Author");
+        searchTypeNames.add("Genre");
+        searchTypeNames.add("Title");
+
+
+        searchType.getItems().addAll(searchTypeNames);
+        searchType.setItems(searchType.getItems());
+        searchType.getSelectionModel().selectFirst();
 
         searchBar.setPromptText("Search");
         titleTxt.setPromptText("Title");
@@ -57,8 +74,6 @@ public class MainWindow extends Application {
 
         books.setItems(books.getItems());
 
-
-
         searchBar.setMaxWidth(Double.MAX_VALUE);
         addBook.setMaxWidth(250);
         removeBook.setMaxWidth(250);
@@ -83,6 +98,43 @@ public class MainWindow extends Application {
             LogOutWindow logOutWindow = new LogOutWindow();
             logOutWindow.start(new Stage());
         });
+
+        search.setOnAction(e ->{
+            String text = searchBar.getText();
+
+            if(text.equals("")){
+                refreshList();
+            }
+
+            ArrayList<String> list = new ArrayList<>();
+            for(Book b: userLib.getBooks()){
+                if(b == null) continue;
+
+                switch(searchType.getSelectionModel().getSelectedItem()){
+                    case "Author":
+                        if(b.getAuthor().toLowerCase().contains(text.toLowerCase())){
+                            System.out.println(b.getAuthor().contains(text));
+                            list.add(b.getTitle());
+                        }
+                        break;
+                    case "Genre":
+                        if(b.getGenre().toLowerCase().contains(text.toLowerCase())){
+                            list.add(b.getTitle());
+                        }
+                        break;
+                    case "Title":
+                        if(b.getTitle().toLowerCase().contains(text.toLowerCase())){
+                            list.add(b.getTitle());
+                        }
+                        break;
+                }
+            }
+            books.getItems().remove(0, books.getItems().size());
+            books.getItems().addAll(list);
+            books.setItems(books.getItems());
+        });
+
+
 
         books.setOnMouseClicked(e ->{
             if(books.getSelectionModel().getSelectedItem() == null){
@@ -157,8 +209,6 @@ public class MainWindow extends Application {
         root.addRow(5, addBook, cancel);
 
         addBook.setOnAction( e ->{
-
-
             userLib.addBook(new Book(titleTxt.getText(), authorTxt.getText(), genreTxt.getText(), isbnTxt.getText(), languageTxt.getText()));
             refreshList();
             stage.close();
@@ -177,12 +227,17 @@ public class MainWindow extends Application {
 
     public void refreshList(){
         for(Book b: userLib.getBooks()){
-            System.out.println(b);
             if(b != null){
                 if(!books.getItems().contains(b.getTitle())) books.getItems().add(b.getTitle());
             }
         }
 
         books.setItems(books.getItems());
+    }
+
+    public static void close(){
+        if(mainStage != null){
+            mainStage.close();
+        }
     }
 }

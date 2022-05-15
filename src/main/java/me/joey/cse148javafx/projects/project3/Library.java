@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class Library implements Serializable {
 
-    private static File savePath = new File("C:\\CSE148JavaFX\\src\\main\\resources\\library.dat");
+    private static File savePath = new File("D:\\CSE148JavaFX\\src\\main\\resources\\library.dat");
     private static Map<User, Library> data = new HashMap<>();
     //Use in final project
     // private static File savePath = new File(System.getProperty("user.dir"));
@@ -37,14 +37,22 @@ public class Library implements Serializable {
 
     public void addBook(Book...book){
         books = generateArray(books, book.length);
-        for(int i = 0; i < book.length; i++){
-            for(int j = 0; j < books.length; j++){
-                if(books[j] == null){
-                    books[j] = book[i];
+        for (Book b : book) {
+            for (int j = 0; j < books.length; j++) {
+                if (books[j] == null) {
+                    books[j] = b;
+                    try(ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(savePath))){
+                        data.put(user, this);
+                        objOut.writeObject(data);
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
                     break;
                 }
             }
         }
+
+
     }
 
     public Book[] getBooks() {

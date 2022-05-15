@@ -30,6 +30,19 @@ public class LogOutWindow extends Application {
         root.setTop(confirm);
         root.setBottom(buttons);
 
+        yes.setOnAction(e->{
+            User.setLoggedInUser(null);
+            LoginScreen login = new LoginScreen();
+            login.start(new Stage());
+            MainWindow.close();
+            stage.close();
+
+        });
+
+        no.setOnAction(e->{
+            stage.close();
+        });
+
         buttons.setAlignment(Pos.BOTTOM_CENTER);
 
         Scene s = new Scene(root);

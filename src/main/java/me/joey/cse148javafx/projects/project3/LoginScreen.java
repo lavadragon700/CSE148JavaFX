@@ -8,9 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -19,8 +17,6 @@ public class LoginScreen extends Application {
     public void start(Stage stage){
 
         DataCenter data = DataCenter.getInstance();
-
-
 
         Label usernameTxt = new Label("Username: ");
         TextField username = new TextField();
@@ -82,7 +78,6 @@ public class LoginScreen extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         try(ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(User.getSavePath()))){
             for(User u: (ArrayList<User>) objIn.readObject()){

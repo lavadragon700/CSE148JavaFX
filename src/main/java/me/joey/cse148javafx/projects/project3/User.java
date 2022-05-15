@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class User implements Serializable {
-    private static final File savePath = new File("C:\\CSE148JavaFX\\src\\main\\resources\\users.dat");
+    private static final File savePath = new File("D:\\CSE148JavaFX\\src\\main\\resources\\users.dat");
     private static User loggedInUser;
 
     //Use in final project
